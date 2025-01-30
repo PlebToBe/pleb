@@ -1,0 +1,24 @@
+{
+  "name": "normie-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.0",
+    "next": "latest",
+    "postcss": "^8.4.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "^3.0.0",
+    "three": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest"
+  }
+}
