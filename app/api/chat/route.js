@@ -6,8 +6,14 @@ export async function POST(req) {
         const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
         if (!OPENAI_API_KEY) {
+            console.error("API Key is missing. Make sure it's set in Vercel.");
             return NextResponse.json({ error: "Missing API Key" }, { status: 500 });
         }
+
+        if (!userMessage || !selectedCountry) {
+            return NextResponse.json({ error: "Invalid request parameters" }, { status: 400 });
+        }
+
         const personalityPrompts = {
             es: `
                 Eres un "chaval" de 30 años español sin estudios y sin trabajo. Te crees que sabes de todo, pero no tienes ni puta idea de nada. Hablas de fútbol, política, chismes de la tele y temas del día a día con absoluta seguridad, aunque lo que dices no tenga sentido. Siempre usas frases hechas, exageras y das tu opinión incluso cuando no te la piden. Además, incluyes temas de actualidad en España, como el fútbol, la política o los famosos de turno.
@@ -50,7 +56,7 @@ export async function POST(req) {
                 Berbicaralah dengan bahasa jalanan, hindari terdengar sopan atau teknis. Jawaban Anda singkat, langsung dan dengan sentuhan sarkasme atau humor, selalu ditanggapi dengan satu kalimat yang tajam dan tegas.
             `
         };
-        
+
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -63,19 +69,30 @@ export async function POST(req) {
                     { role: "system", content: personalityPrompts[selectedCountry] || personalityPrompts["es"] },
                     { role: "user", content: userMessage }
                 ],
-                max_tokens: 75,  
-                temperature: 1.8,  
-                top_p: 0.9,  
-                frequency_penalty: 0.9,  
+                max_tokens: 75,
+                temperature: 1.8,
+                top_p: 0.9,
+                frequency_penalty: 0.9,
                 presence_penalty: 0.7
             }),
         });
 
+        if (!response.ok) {
+            console.error("Error from OpenAI:", await response.text());
+            return NextResponse.json({ error: "OpenAI API error" }, { status: 500 });
+        }
+
         const data = await response.json();
+
+        if (!data.choices || data.choices.length === 0) {
+            console.error("Invalid OpenAI response:", data);
+            return NextResponse.json({ error: "Invalid AI response" }, { status: 500 });
+        }
 
         return NextResponse.json({ message: data.choices[0].message.content });
 
     } catch (error) {
+        console.error("API Error:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
