@@ -147,7 +147,7 @@ export default function Home() {
 
             {/* Footer */}
             <footer className="text-gray-500 text-sm mt-6 text-center z-10">
-                Pleb.be is like talking to that one guy at the bar who knows everything (but actually nothing).
+                Pleb.be is like talking to that one guy at the bar who knows everything, but actually nothing. Proceed at your own risk.
             </footer>
         </div>
     );
