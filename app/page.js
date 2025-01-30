@@ -45,7 +45,7 @@ export default function Home() {
         setLoading(true);
 
         try {
-            const response = await fetch("/api/chat", {
+            const response = await fetch(`${window.location.origin}/api/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userMessage: input, selectedCountry }),
