@@ -75,7 +75,7 @@ export default function Home() {
                         __html: `
                         <ins class="adsbygoogle"
                             style="display:inline-block;width:160px;height:600px"
-                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-client="ca-pub-2753183170718760"
                             data-ad-slot="0987654321"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     `}} />
@@ -89,7 +89,7 @@ export default function Home() {
                         __html: `
                         <ins class="adsbygoogle"
                             style="display:inline-block;width:160px;height:600px"
-                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-client="ca-pub-2753183170718760"
                             data-ad-slot="0987654321"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     `}} />
@@ -158,7 +158,7 @@ export default function Home() {
                         __html: `
                         <ins class="adsbygoogle"
                             style="display:block"
-                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-client="ca-pub-2753183170718760"
                             data-ad-slot="1234567890"
                             data-ad-format="horizontal"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
