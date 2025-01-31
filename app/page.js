@@ -7,6 +7,7 @@ export default function Home() {
     const [input, setInput] = useState("");
     const [selectedCountry, setSelectedCountry] = useState("us");
     const [loading, setLoading] = useState(false);
+    const [adsLoaded, setAdsLoaded] = useState(false);
 
     const normiePlaceholders = {
         us: "Yo! Wassup? What do you want?",
@@ -23,12 +24,14 @@ export default function Home() {
     };
 
     useEffect(() => {
-        createStarBackground();  
-    }, []);  
-    
+        createStarBackground();
+        setAdsLoaded(true); // Solo cuando el componente está montado
+    }, []);
+
     useEffect(() => {
-        setMessages([{ role: "bot", content: normiePlaceholders[selectedCountry] || "Yo! Wassup?" }]); 
-    }, [selectedCountry]); 
+        setMessages([{ role: "bot", content: normiePlaceholders[selectedCountry] || "Yo! Wassup?" }]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedCountry]);
 
     const handleCountryChange = (event) => {
         const newCountry = event.target.value;
@@ -65,23 +68,33 @@ export default function Home() {
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen text-white font-sans">
 
-            {/* Banner Lateral Izquierdo (Solo en pantallas grandes) */}
-            <div className="hidden lg:block fixed left-0 top-1/2 transform -translate-y-1/2 w-[160px] h-[600px] bg-gray-800/90 flex items-center justify-center text-gray-400 text-xs">
-            {/* <ins className="adsbygoogle"
-                    style={{ display: "block", width: "160px", height: "600px" }}
-                    data-ad-client="ca-pub-XXXXXX" 
-                    data-ad-slot="XXXXXX"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
-            </div>
+            {/* Ads: Left Skyscraper */}
+            {adsLoaded && (
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 hidden md:block">
+                    <div dangerouslySetInnerHTML={{
+                        __html: `
+                        <ins class="adsbygoogle"
+                            style="display:inline-block;width:160px;height:600px"
+                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-slot="0987654321"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    `}} />
+                </div>
+            )}
 
-            {/* Banner Lateral Derecho (Solo en pantallas grandes) */}
-            <div className="hidden lg:block fixed right-0 top-1/2 transform -translate-y-1/2 w-[160px] h-[600px] bg-gray-800/90 flex items-center justify-center text-gray-400 text-xs">
-              {/*    <ins className="adsbygoogle"
-                    style={{ display: "block", width: "160px", height: "600px" }}
-                    data-ad-client="ca-pub-XXXXXX" 
-                    data-ad-slot="XXXXXX"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>*/}
-            </div>
+            {/* Ads: Right Skyscraper */}
+            {adsLoaded && (
+                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 hidden md:block">
+                    <div dangerouslySetInnerHTML={{
+                        __html: `
+                        <ins class="adsbygoogle"
+                            style="display:inline-block;width:160px;height:600px"
+                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-slot="0987654321"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    `}} />
+                </div>
+            )}
 
             {/* Contenido Central */}
             <h1 className="text-7xl md:text-9xl font-bold font-[Barrio] tracking-wide mb-4 z-10 text-yellow-400">Pleb.be</h1>
@@ -136,14 +149,20 @@ export default function Home() {
                 </button>
             </div>
 
-            {/* Gigabanner Inferior */}
-            <div className="w-full max-w-[728px] h-[90px] bg-gray-800/90 mt-6 flex items-center justify-center">
-                  {/*<ins className="adsbygoogle"
-                    style={{ display: "block", width: "728px", height: "90px" }}
-                    data-ad-client="ca-pub-XXXXXX" 
-                    data-ad-slot="XXXXXX"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>  */}
-            </div>
+            {/* MegaBanner Inferior */}
+            {adsLoaded && (
+                <div className="flex justify-center mt-4">
+                    <div dangerouslySetInnerHTML={{
+                        __html: `
+                        <ins class="adsbygoogle"
+                            style="display:block"
+                            data-ad-client="ca-pub-3940256099942544"
+                            data-ad-slot="1234567890"
+                            data-ad-format="horizontal"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    `}} />
+                </div>
+            )}
 
             {/* Footer */}
             <footer className="text-gray-500 text-sm mt-6 text-center z-10">
