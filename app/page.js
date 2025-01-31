@@ -26,6 +26,18 @@ export default function Home() {
     useEffect(() => {
         createStarBackground();
         setAdsLoaded(true);
+
+            // Ajustar tamaño del canvas al redimensionar
+        const handleResize = () => {
+            const canvas = document.querySelector("canvas");
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
@@ -66,7 +78,7 @@ export default function Home() {
     };
 
     return (
-        <div className="relative flex flex-col items-center justify-center min-h-screen text-white font-sans">
+        <div className="relative flex flex-col items-center justify-start min-h-screen sm:justify-center text-white font-sans px-4">
 
             {/* Ads: Left Skyscraper */}
             {adsLoaded && (
@@ -123,7 +135,7 @@ export default function Home() {
             </select>
 
             {/* Chatbox */}
-            <div className="relative z-10 w-[70%] h-[400px] bg-gray-900/80 rounded-xl p-4 overflow-y-auto mt-6 border border-gray-700 shadow-xl">
+            <div className="relative z-10 w-full max-w-lg h-[400px] bg-gray-900/80 rounded-xl p-4 overflow-y-auto mt-6 border border-gray-700 shadow-xl">
                 {messages.map((msg, index) => (
                     <p key={index} className={msg.role === "user" ? "text-blue-300" : "text-green-300"}>
                         {msg.role === "user" ? "You: " : "Pleb AI: "}
@@ -134,7 +146,7 @@ export default function Home() {
             </div>
 
             {/* Input & Send Button */}
-            <div className="relative z-10 flex w-[70%]">
+            <div className="relative w-full max-w-lg z-10 flex w-[70%]">
                 <input
                     className="p-3 flex-grow bg-gray-800 text-white border border-gray-600 rounded-l-lg outline-none focus:ring-2 focus:ring-yellow-400"
                     type="text"
