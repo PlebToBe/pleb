@@ -25,7 +25,7 @@ export default function Home() {
 
     useEffect(() => {
         createStarBackground();
-        setAdsLoaded(true); // Solo cuando el componente está montado
+        setAdsLoaded(true);
     }, []);
 
     useEffect(() => {
@@ -97,7 +97,9 @@ export default function Home() {
             )}
 
             {/* Contenido Central */}
-            <h1 className="text-7xl md:text-9xl font-bold font-[Barrio] tracking-wide mb-4 z-10 text-yellow-400">Pleb.be</h1>
+            <h1 className="text-7xl md:text-9xl font-bold font-[Barrio] tracking-wide mb-4 z-10 text-yellow-400">
+                Pleb.be
+            </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-lg text-center z-10">
                 Be Pleb. Be Free. Be Stupid.
             </p>

@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script dangerouslySetInnerHTML={{ __html: `
           (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-3940256099942544",
+              google_ad_client: "ca-pub-2753183170718760",
               enable_page_level_ads: true
           });
         `}} />
