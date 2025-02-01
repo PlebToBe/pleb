@@ -19,7 +19,6 @@ export default function Home() {
         ru: "Ну, чё надо?",
         jp: "おい、何か用か？",
         cn: "哎，你要干嘛？",
-        hi: "क्या चाहिए भाई?",
         br: "E aí mano, fala logo!",
     };
 
