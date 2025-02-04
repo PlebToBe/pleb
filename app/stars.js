@@ -7,18 +7,41 @@ export function createStarBackground() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0x000000, 0);
+    renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    scene.fog = new THREE.Fog(0xFF0000, 10, 2000); // Color negro, inicia en 500 y termina en 2000
+    scene.fog = new THREE.Fog(0xFF0000, 100, 1000);
 
-    // ⭐ Load face textures
-    const headTextures = [
-        new THREE.TextureLoader().load("/star1.png"),
-        new THREE.TextureLoader().load("/star2.png"),
-        new THREE.TextureLoader().load("/star3.png"),
-        new THREE.TextureLoader().load("/star4.png"),
-        new THREE.TextureLoader().load("/star5.png"),
-    ];
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(200, 500, 300);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.left = -500;
+    dirLight.shadow.camera.right = 500;
+    dirLight.shadow.camera.top = 500;
+    dirLight.shadow.camera.bottom = -500;
+    dirLight.shadow.camera.far = 2000;
+    scene.add(dirLight);
+
+    const groundGeometry = new THREE.PlaneGeometry(4000, 4000);
+    const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.5 });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1000;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // 🌠 Ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // Slightly reduced intensity
+    ambientLight.castShadow = true;
+    scene.add(ambientLight);
+
+    // 🔥 Background light for depth
+    const horizonLight = new THREE.PointLight(0x9966ff, 1.5, 2000);
+    horizonLight.position.set(0, -500, -500);
+    horizonLight.castShadow = true;
+    scene.add(horizonLight);
 
     // 🌌 Create starry galaxy
     const starsGeometry = new THREE.BufferGeometry();
@@ -34,6 +57,15 @@ export function createStarBackground() {
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
 
+    // ⭐ Load face textures
+    const headTextures = [
+        new THREE.TextureLoader().load("/star1.png"),
+        new THREE.TextureLoader().load("/star2.png"),
+        new THREE.TextureLoader().load("/star3.png"),
+        new THREE.TextureLoader().load("/star4.png"),
+        new THREE.TextureLoader().load("/star5.png"),
+    ];
+    
     const sphereVertexShader = `
         varying vec2 vUv;
         varying vec3 vNormal;
@@ -76,12 +108,12 @@ export function createStarBackground() {
     const rotatingHeads = [];
 
     for (let i = 0; i < 200; i++) {
-        const headGeometry = new THREE.SphereGeometry(10, 64, 64);
+        const headGeometry = new THREE.SphereGeometry(10, 8, 8);
         const randomTexture = headTextures[Math.floor(Math.random() * headTextures.length)];
 
         const bumpUniforms = {
             texture1: { value: randomTexture },
-            bumpIntensity: { value: 1 } // Ajusta la intensidad del relieve
+            bumpIntensity: { value: 1 }
         };
 
         const headMaterial = new THREE.ShaderMaterial({
@@ -101,7 +133,7 @@ export function createStarBackground() {
             Math.random() * Math.PI,
             Math.random() * Math.PI
         );
-
+        head.receiveShadow = true;
         rotatingHeads.push({
             mesh: head,
             rotationSpeed: { x: (Math.random() - 0.5) * 0.1, y: (Math.random() - 0.5) * 0.1 }
@@ -111,15 +143,6 @@ export function createStarBackground() {
     }
 
     scene.add(headsGroup);
-
-    // 🌠 Ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // Slightly reduced intensity
-    scene.add(ambientLight);
-
-    // 🔥 Background light for depth
-    const horizonLight = new THREE.PointLight(0x9966ff, 1.5, 2000);
-    horizonLight.position.set(0, -500, -500);
-    scene.add(horizonLight);
 
     // 🪐 Planets with lava shader
     const planets = [];
@@ -169,6 +192,7 @@ export function createStarBackground() {
         }
 
         planet.position.set(x, y, -Math.random() * 2500);
+        planet.castShadow = true;
         planets.push(planet);
         scene.add(planet);
     }
