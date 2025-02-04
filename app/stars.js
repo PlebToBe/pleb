@@ -34,24 +34,82 @@ export function createStarBackground() {
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
 
-    // 🌟 Floating spheres with textures
+    const sphereVertexShader = `
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+            vUv = uv;
+            vNormal = normal;
+            vPosition = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `;
+
+    const sphereFragmentShader = `
+        uniform sampler2D texture1;
+        uniform float bumpIntensity;
+
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+            vec4 texColor = texture2D(texture1, vUv);
+
+            float grayscale = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+
+            float bump = (1.0 - grayscale) * bumpIntensity;
+            
+            vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
+
+            float lighting = dot(vNormal, lightDir);
+
+            vec3 finalColor = texColor.rgb + bump * lighting * 0.5;
+
+            gl_FragColor = vec4(finalColor, texColor.a);
+        }
+    `;
+
     const headsGroup = new THREE.Group();
     const rotatingHeads = [];
+
     for (let i = 0; i < 200; i++) {
         const headGeometry = new THREE.SphereGeometry(10, 64, 64);
         const randomTexture = headTextures[Math.floor(Math.random() * headTextures.length)];
-        const headMaterial = new THREE.MeshStandardMaterial({ map: randomTexture });
+
+        const bumpUniforms = {
+            texture1: { value: randomTexture },
+            bumpIntensity: { value: 1 } // Ajusta la intensidad del relieve
+        };
+
+        const headMaterial = new THREE.ShaderMaterial({
+            uniforms: bumpUniforms,
+            vertexShader: sphereVertexShader,
+            fragmentShader: sphereFragmentShader
+        });
+
         const head = new THREE.Mesh(headGeometry, headMaterial);
-        head.position.set((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000);
-        head.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        head.position.set(
+            (Math.random() - 0.5) * 1000,
+            (Math.random() - 0.5) * 1000,
+            (Math.random() - 0.5) * 1000
+        );
+        head.rotation.set(
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI
+        );
 
         rotatingHeads.push({
             mesh: head,
-            rotationSpeed: { x: (Math.random() - 0.5) * 0.1, y: (Math.random() - 0.5) * 0.1 },
+            rotationSpeed: { x: (Math.random() - 0.5) * 0.1, y: (Math.random() - 0.5) * 0.1 }
         });
 
         headsGroup.add(head);
     }
+
     scene.add(headsGroup);
 
     // 🌠 Ambient light
