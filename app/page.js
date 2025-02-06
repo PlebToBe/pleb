@@ -1,3 +1,4 @@
+// page.js
 "use client";
 import { useState, useEffect } from "react";
 import { createStarBackground } from "./stars";
@@ -26,7 +27,6 @@ export default function Home() {
         createStarBackground();
         setAdsLoaded(true);
 
-            // Ajustar tamaño del canvas al redimensionar
         const handleResize = () => {
             const canvas = document.querySelector("canvas");
             if (canvas) {
@@ -78,7 +78,6 @@ export default function Home() {
 
     return (
         <div className="relative flex flex-col items-center justify-start min-h-screen sm:justify-center text-white font-sans px-4">
-
             {/* Ads: Left Skyscraper */}
             {adsLoaded && (
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 hidden md:block">

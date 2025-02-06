@@ -1,6 +1,7 @@
+// layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,15 +22,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* SEO Meta Tags */}
         <meta property="og:title" content="Pleb.be – The Dumbest AI on the Internet" />
         <meta property="og:description" content="Be Pleb. Be Free. Be Stupid." />
         <meta property="og:url" content="https://pleb.be" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes" />
-
-        {/* Google AdSense (Modo Prueba) */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script dangerouslySetInnerHTML={{ __html: `
           (adsbygoogle = window.adsbygoogle || []).push({
@@ -40,6 +38,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
