@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Pleb.be – The Dumbest AI on the Internet",
+  title: "Pleb.be - The Dumbest AI on the Internet",
   description: "Be Pleb. Be Free. Be Stupid.",
 };
 
